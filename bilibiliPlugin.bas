@@ -18,7 +18,7 @@ Sub Class_Globals
 	Private needDownloads As Int = 1 'How many downloadhandlers should be generated
 	Private updateInterval As Int = 0 'force update after X seconds. 0 for systeminterval
 	Private lockApp As Boolean=False 'If set to true AWTRIX will wait for the " finish" command before switch wo the next app.
-    Private iconID As Int = 518
+    Private iconID As Int = 9
 	
 	Private description As String= $"
 	This is a app for a Bilibili Upper to show fans count.<br />
@@ -40,7 +40,7 @@ Sub Class_Globals
 	Dim mid As String
     Dim subs As String ="0"
 
-	Dim Icon() As Int = Array as Int(0, 0, 0, 0, 0, 0, 0, 0, 0, 32415, 32415, 32415, 32415, 32415, 32415, 0, 32415, 32415, 32415, 65535, 32415, 32415, 32415, 32415, 32415, 32415, 32415, 65535, 65535, 32415, 32415, 32415, 32415, 32415, 32415, 65535, 65535, 32415, 32415, 32415, 32415, 32415, 32415, 65535, 32415, 32415, 32415, 32415, 0, 32415, 32415, 32415, 32415, 32415, 32415, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+	Dim Icon() As Int = Array as Int(0, 26303, 0, 0, 0, 0, 26303, 0, 0, 0, 26303, 0, 0, 26303, 0, 0, 0, 26303, 26303, 26303, 26303, 26303, 26303, 0, 26303, 0, 0, 0, 0, 0, 0, 26303, 26303, 0, 26303, 0, 0, 26303, 0, 26303, 26303, 0, 0, 0, 0, 0, 0, 26303, 26303, 0, 0, 0, 0, 0, 0, 26303, 0, 26303, 26303, 26303, 26303, 26303, 26303, 0)
 	
 End Sub
 
@@ -157,11 +157,8 @@ Sub evalJobResponse(nr As Int,success As Boolean,response As String,InputStream 
 				Dim parser As JSONParser
 				parser.Initialize(response)
 				Dim root As Map = parser.NextObject
-				Log(root)
                 Dim bdata As Map = root.Get("data")
-				Log(bdata)
                 subs = bdata.Get("follower")
-                Log("111:"&subs)
 				Return True
 			Catch
 				Log("Error in: "&AppName & CRLF & LastException)
@@ -176,13 +173,14 @@ End Sub
 Sub genFrame As List
 	commandList.Add(genText(subs))
 	commandList.Add(CreateMap("type":"bmp","x":0,"y":0,"bmp":Icon,"width":8,"height":8))
+    commandList.add(CreateMap("type":"line","x0":9,"y0":7,"x1":29,"y1":7,"color":Array As Int(98,214,255)))
 	Return commandList
 End Sub
 
 'Helper to generate a scrolling Text
 Sub genText(s As String) As Map
 	If s.Length>5 Then
-		Dim command As Map=CreateMap("type":"text","text":s,"x":scrollposition,"y":1,"font":"auto")
+		Dim command As Map=CreateMap("type":"text","text":s,"x":scrollposition,"y":1,"font":"auto","color":Array As Int(207,78,117))
 		scrollposition=scrollposition-1
 		If scrollposition< 0-(s.Length*4)  Then
 			If lockApp Then
@@ -193,7 +191,7 @@ Sub genText(s As String) As Map
 			End If
 		End If
 	Else
-		Dim command As Map=CreateMap("type":"text","text":s,"x":9,"y":1,"font":"auto")
+		Dim command As Map=CreateMap("type":"text","text":s,"x":9,"y":1,"font":"auto","color":Array As Int(207,78,117))
 	End If
 	Return command
 End Sub
